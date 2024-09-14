@@ -1,4 +1,4 @@
-// Rohit Kumar
+// Rohit Kumar Gupta
 class Solution {
 public:
     int longestSubarray(vector<int>& nums) {
