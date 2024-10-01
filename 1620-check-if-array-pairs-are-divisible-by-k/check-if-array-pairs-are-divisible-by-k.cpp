@@ -1,24 +1,31 @@
 class Solution {
 public:
+    // Custom comparator to sort based on mod values.
+    struct Comparator {
+        int k;
+        Comparator(int k) { this->k = k; }
+        bool operator()(int i, int j) {
+            return (k + i % k) % k < (k + j % k) % k;
+        }
+    };
+
     bool canArrange(vector<int>& arr, int k) {
-        unordered_map<int, int> remainderCount;
+        sort(arr.begin(), arr.end(), Comparator(k));
 
-        // Store the count of remainders in a map.
-        for (auto i : arr) remainderCount[(i % k + k) % k]++;
+        // Assign the pairs with modulo 0 first.
+        int start = 0, end = arr.size() - 1;
+        while (start < end) {
+            if (arr[start] % k != 0) break;
+            if (arr[start + 1] % k != 0) return false;
+            start = start + 2;
+        }
 
-        for (auto i : arr) {
-            int rem = (i % k + k) % k;
-
-            // If the remainder for an element is 0, then the count
-            // of numbers that give this remainder must be even.
-            if (rem == 0) {
-                if (remainderCount[rem] % 2 == 1) return false;
-            }
-
-            // If the remainder rem and k-rem do not have the
-            // same count then pairs can not be made.
-            else if (remainderCount[rem] != remainderCount[k - rem])
-                return false;
+        // Now, pick one element from the beginning and one element from the
+        // end.
+        while (start < end) {
+            if ((arr[start] + arr[end]) % k != 0) return false;
+            start++;
+            end--;
         }
         return true;
     }
