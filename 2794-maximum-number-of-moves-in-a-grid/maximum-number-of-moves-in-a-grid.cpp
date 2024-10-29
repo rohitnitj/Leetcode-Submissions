@@ -17,25 +17,21 @@ public:
         vector<int> dcol = { 1, 1, 1 } ;
 
         while( !q.empty() ) {
-            int size = q.size() ;
 
-            for( int i = 0 ; i < size ; i++ ) {
+            int row = q.front().first.first ;
+            int col = q.front().first.second ;
+            int cnt = q.front().second ;
 
-                int row = q.front().first.first ;
-                int col = q.front().first.second ;
-                int cnt = q.front().second ;
+            ans = max(ans, cnt ) ;
+            q.pop() ;
 
-                ans = max(ans, cnt ) ;
-                q.pop() ;
+            for( int i = 0 ; i < 3 ; i++ ) {
+                int nrow = row + drow[i] ;
+                int ncol = col + dcol[i] ;
 
-                for( int i = 0 ; i < 3 ; i++ ) {
-                    int nrow = row + drow[i] ;
-                    int ncol = col + dcol[i] ;
-
-                    if( nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && !vis[nrow][ncol] && grid[row][col] < grid[nrow][ncol] ) {
-                        vis[nrow][ncol] = 1 ;
-                        q.push( { { nrow, ncol }, cnt + 1 } ) ;
-                    }
+                if( nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && !vis[nrow][ncol] && grid[row][col] < grid[nrow][ncol] ) {
+                    vis[nrow][ncol] = 1 ;
+                    q.push( { { nrow, ncol }, cnt + 1 } ) ;
                 }
             }
         }
