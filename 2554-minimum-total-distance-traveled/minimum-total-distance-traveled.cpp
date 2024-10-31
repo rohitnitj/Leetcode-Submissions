@@ -1,6 +1,6 @@
-// Tabulation
+// Space Optimization
 // TC : O( M * N^2 ) 
-// SC : O( N * M ) 
+// SC : O( m + S ) 
 
 class Solution {
 public:
@@ -18,20 +18,24 @@ public:
 
         int rs = robot.size() ;
         int fs = factPos.size() ;
-        vector<vector<long long>> dp(rs+1, vector<long long> (fs+1, 0 ) ) ;
+        vector<long long> next(fs+1, 0 ) ;
+        vector<long long> curr(fs+1, 0 ) ;
 
-        for( int i = 0 ; i < rs ; i++ ) dp[i][fs] = 1e18 ;
-        for( int j = 0 ; j < fs ; j++ ) dp[rs][j] = 0 ;
+        for( int i = rs-1 ; i >= 0 ; i-- ) {
+            if( i != rs-1 ) next[fs] = 1e18 ;
+            curr[fs] = 1e18 ;
 
-        for( int i = rs- 1 ; i >= 0 ; i-- ) {
-            for(int j = fs - 1; j >= 0 ; j-- ) {
+            for( int j = fs-1 ; j >= 0 ; j-- ) {
 
-                long long assign = abs( robot[i] - factPos[j] ) + dp[i+1][j+1] ;
-                long long skip = dp[i][j+1] ;
-                dp[i][j] = min(assign, skip ) ;
+                long long assign = abs( robot[i] - factPos[j] ) + next[j+1] ;
+                long long skip = curr[j+1] ;
+
+                curr[j] = min( assign, skip ) ;
             }
+
+            next = curr ;
         }
 
-        return dp[0][0] ;
+        return curr[0] ;
     }
 };
