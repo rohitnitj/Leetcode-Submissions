@@ -1,20 +1,8 @@
-// Memorization
-// TC : O( N^2 * M ) 
+// Tabulation
+// TC : O( M * N^2 ) 
 // SC : O( N * M ) 
 
 class Solution {
-long long func( int ri, int fi, vector<int> &robot, vector<int> &factpos, vector<vector<long long>> &dp) {
-
-   if( ri == robot.size() ) return 0 ;
-   if( fi == factpos.size() ) return 1e18 ;
-   if( dp[ri][fi] != -1 ) return dp[ri][fi] ;
-
-   long long assign = abs( robot[ri] - factpos[fi] ) + func( ri+1, fi+1, robot, factpos, dp) ;
-   long long skip = func( ri, fi+1, robot, factpos, dp ) ;
-
-   return dp[ri][fi] = min( assign, skip ) ; 
-}
-
 public:
     long long minimumTotalDistance(vector<int>& robot, vector<vector<int>>& factory) {
         
@@ -30,8 +18,20 @@ public:
 
         int rs = robot.size() ;
         int fs = factPos.size() ;
-        vector<vector<long long>> dp(rs, vector<long long> (fs, -1 ) ) ;
+        vector<vector<long long>> dp(rs+1, vector<long long> (fs+1, 0 ) ) ;
 
-        return func(0, 0, robot, factPos, dp) ;
+        for( int i = 0 ; i < rs ; i++ ) dp[i][fs] = 1e18 ;
+        for( int j = 0 ; j < fs ; j++ ) dp[rs][j] = 0 ;
+
+        for( int i = rs- 1 ; i >= 0 ; i-- ) {
+            for(int j = fs - 1; j >= 0 ; j-- ) {
+
+                long long assign = abs( robot[i] - factPos[j] ) + dp[i+1][j+1] ;
+                long long skip = dp[i][j+1] ;
+                dp[i][j] = min(assign, skip ) ;
+            }
+        }
+
+        return dp[0][0] ;
     }
 };
