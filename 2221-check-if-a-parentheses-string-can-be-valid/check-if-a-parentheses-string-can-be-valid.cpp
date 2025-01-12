@@ -1,47 +1,40 @@
 class Solution {
 public:
     bool canBeValid(string s, string locked) {
-        int n = s.size();
-        if (n & 1) return false;
+        int n = s.size() ;
+        if( n & 1 ) return false ;
 
-        int open = 0, unlock = 0;
+        stack<int> open, unlocked ;
 
-        for (int i = 0; i < n; i++) {
-            if (locked[i] == '0') {
-                unlock++;
-            } else if (s[i] == '(') {
-                open++;
-            } else {
-                if (open > 0) {
-                    open--;
-                } else if (unlock > 0) {
-                    unlock--;
-                } else {
-                    return false;
+        for( int i = 0 ; i < n ; i++ ) {
+            if( locked[i] == '0' ) {
+                unlocked.push(i) ;
+            }
+            else if( s[i] == '(' ) {
+                open.push(i) ;
+            }
+            else if( s[i] == ')' ) {
+                if( !open.empty() ) {
+                    open.pop() ;
+                }
+                else if( !unlocked.empty() ) {
+                    unlocked.pop() ;
+                }
+                else{
+                    return false ;
                 }
             }
         }
 
-        if (open > unlock) return false;
-
-        open = unlock = 0;
-
-        for (int i = n - 1; i >= 0; i--) {
-            if (locked[i] == '0') {
-                unlock++;
-            } else if (s[i] == ')') {
-                open++;
-            } else {
-                if (open > 0) {
-                    open--;
-                } else if (unlock > 0) {
-                    unlock--;
-                } else {
-                    return false;
-                }
-            }
+        while( !open.empty() && !unlocked.empty() && open.top() < unlocked.top() ) {
+            open.pop() ;
+            unlocked.pop() ;
         }
 
-        return open <= unlock;
+        if( !open.empty() ) {
+            return false ;
+        }
+
+        return true ;
     }
 };
