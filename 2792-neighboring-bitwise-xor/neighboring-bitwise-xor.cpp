@@ -1,10 +1,10 @@
 class Solution {
 public:
     bool doesValidArrayExist(vector<int>& derived) {
-        int exor = 0 ;
+        int sum = 0 ;
         for( auto d : derived ) {
-            exor ^= d ;
+            sum += d ;
         }
-        return exor == 0 ;
+        return ( sum % 2 == 0 ) ;
     }
 };
