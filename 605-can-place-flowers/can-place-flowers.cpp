@@ -2,21 +2,35 @@ class Solution {
 public:
     bool canPlaceFlowers(vector<int>& flowerbed, int n) {
         int sz = flowerbed.size() ;
-        int cnt = 0 ;
+
+        if( sz == 1 ) {
+            if( flowerbed[0] == 0 ) n-- ;
+            return n <= 0 ;
+        }
 
         for( int i = 0 ; i < sz ; i++ ) {
             if( flowerbed[i] == 0 ) {
+                if( i == 0 ) {
+                    if( flowerbed[i+1] == 0 ) {
+                        flowerbed[i] = 1 ;
+                        n-- ;
+                    }
+                }
 
-                bool left = ( i == 0 ) || ( flowerbed[i-1] == 0 ) ;
-                bool right = ( i == sz - 1 ) || ( flowerbed[i+1] == 0 ) ;
+                else if( i == sz-1 ) {
+                    if( flowerbed[i-1] == 0 ) {
+                        flowerbed[i] = 1 ;
+                        n-- ;
+                    }
+                }
 
-                if( left && right ) {
+                else if( flowerbed[i-1] == 0 && flowerbed[i+1] == 0 ) {
                     flowerbed[i] = 1 ;
-                    cnt++ ;
+                    n-- ;
                 }
             }
         }
 
-        return cnt >= n ;
+        return n <= 0 ;
     }
 };
