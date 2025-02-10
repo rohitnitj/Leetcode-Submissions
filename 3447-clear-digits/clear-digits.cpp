@@ -11,20 +11,13 @@ private:
 public:
     string clearDigits(string s ) {
         int n = s.size() ;
-        stack<char> st ;
+        string ans = "" ;
 
         for( int i = 0 ; i < n ; i++ ) {
-            if( isDigit(s[i]) ) st.pop() ;
-            else if( isChar(s[i] ) ) st.push(s[i] ) ;
+            if( isDigit(s[i]) ) ans.pop_back() ;
+            else if( isChar(s[i] ) ) ans += s[i] ;
         }
 
-        string ans = "" ;
-        while( !st.empty() ) {
-            ans += st.top() ;
-            st.pop() ;
-        }
-
-        reverse(ans.begin(), ans.end() ) ;
         return ans ;
     }
 };
