@@ -11,13 +11,14 @@ private:
 public:
     string clearDigits(string s ) {
         int n = s.size() ;
-        string ans = "" ;
+        int j = 0 ;
 
         for( int i = 0 ; i < n ; i++ ) {
-            if( isDigit(s[i]) ) ans.pop_back() ;
-            else if( isChar(s[i] ) ) ans += s[i] ;
+            if( isDigit(s[i]) ) j-- ;
+            else if( isChar(s[i] ) ) s[j++] = s[i] ;
         }
 
-        return ans ;
+        s.resize(j) ;
+        return s ;
     }
 };
