@@ -1,28 +1,29 @@
 class Solution {
 public:
     void reorderList(ListNode* head) {
-        ListNode* temp = head;
         deque<int> dq ;
+        ListNode *curr = head ;
 
-        while( temp != NULL ) {
-            dq.push_back(temp -> val ) ;
-            temp = temp -> next ;
+        while( curr ) {
+            dq.push_back(curr -> val ) ;
+            curr = curr -> next ;
         }
 
-        temp = head ;
+        curr = head ;
         dq.pop_front() ;
-        temp = temp -> next ;
+        curr = curr -> next ;
 
-        while( !dq.empty() ) {
-            temp -> val = dq.back() ;
+        while( !dq.empty()) {
+
+            curr -> val = dq.back() ;
+            curr = curr -> next ;
             dq.pop_back() ;
-            temp = temp -> next ;
 
             if( !dq.empty() ) {
-                temp -> val = dq.front() ;
-                dq.pop_front()  ;
-                temp = temp -> next ;
-            }    
+                curr -> val = dq.front() ;
+                curr = curr -> next ;
+                dq.pop_front() ;
+            }
         }
     }
 };
