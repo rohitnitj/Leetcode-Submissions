@@ -13,21 +13,24 @@ public:
     int maximumSum(vector<int>& nums) {
         int n = nums.size() ;
 
-        vector<pair<int,int>> mpp ;
+        map<int, priority_queue<int> > mpp ;
 
         for( auto num : nums ) {
             int dsum = digitSum(num ) ;
-            mpp.push_back( {dsum, num } ) ;
+            mpp[dsum].push(num ) ;
         }
 
-        sort( mpp.begin(), mpp.end() ) ;
-
         int ans = -1 ;
+        for( auto &it : mpp ) {
+            priority_queue<int> pq = it.second ;
 
-        for( int i = 1 ; i < mpp.size() ; i++ ) {
-            
-            if( mpp[i].first == mpp[i-1].first ) {
-                ans = max( ans, mpp[i].second + mpp[i-1].second ) ;
+            if( pq.size() >= 2 ) {
+                
+                int first = pq.top() ;
+                pq.pop() ;
+                int second = pq.top() ;
+
+                ans = max( ans, first + second ) ;
             }
         }
 
