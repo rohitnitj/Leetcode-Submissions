@@ -13,17 +13,20 @@ public:
     int maximumSum(vector<int>& nums) {
         int n = nums.size() ;
 
-        map<int, priority_queue<int> > mpp ;
+        vector< priority_queue<int, vector<int>, greater<int> >> mpp(82 ) ;
 
         for( auto num : nums ) {
             int dsum = digitSum(num ) ;
             mpp[dsum].push(num ) ;
+
+            if(mpp[dsum].size() > 2 ) {
+                mpp[dsum].pop();
+            }
         }
 
         int ans = -1 ;
-        for( auto &it : mpp ) {
-            priority_queue<int> pq = it.second ;
-
+        
+        for( auto &pq : mpp ) {
             if( pq.size() >= 2 ) {
                 
                 int first = pq.top() ;
