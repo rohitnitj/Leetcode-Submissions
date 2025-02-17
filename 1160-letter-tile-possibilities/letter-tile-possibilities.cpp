@@ -1,25 +1,29 @@
 class Solution {
 private:    
-    void func(string &tiles, string temp, vector<bool> &used, unordered_set<string> &st ) {
-        st.insert(temp) ;
+    int func(vector<int> &freq ) {
+        int ans = 0 ;
 
-        for( int i = 0 ; i < tiles.length() ; i++ ) {
-            if( !used[i] ) {
-                used[i] = true ;
-                func(tiles, temp + tiles[i], used, st ) ;
-                used[i] = false ;
-            }
+        for( int i = 0 ; i < 26; i++ ) {
+            if( freq[i] == 0 ) continue; 
+
+            ans++ ;
+            freq[i]-- ;
+            ans += func(freq) ;
+            freq[i]++ ;
         }
+
+        return ans ;
     }
 
 public:
     int numTilePossibilities(string tiles) {
         int n = tiles.size() ;
-        unordered_set<string> st ;
-        vector<bool> used(n, false ) ;
 
-        func(tiles, "", used, st ) ;
+        vector<int> freq(26, 0 ) ;
+        for( auto ch : tiles ) {
+            freq[ch-'A']++ ;
+        }
         
-        return st.size()-1 ;
+        return func(freq )  ;
     }
 };
