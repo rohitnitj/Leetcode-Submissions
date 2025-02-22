@@ -1,17 +1,47 @@
 class FindElements {
+    TreeNode* newRoot ;
+
 public:
-    FindElements(TreeNode* root) { dfs(root, 0); }
+    FindElements(TreeNode* root) {
+        newRoot = root ;
+        root -> val = 0 ;
 
-    bool find(int target) { return seen.count(target) > 0; }
+        queue<TreeNode*> q ;
+        q.push(root ) ;
 
-private:
-    unordered_set<int> seen;
+        while( !q.empty()) {
+            TreeNode *root = q.front() ;
+            int x = root -> val ;
 
-    void dfs(TreeNode* currentNode, int currentValue) {
-        if (!currentNode) return;
-        // visit current node by adding its value to seen
-        seen.insert(currentValue);
-        dfs(currentNode->left, currentValue * 2 + 1);
-        dfs(currentNode->right, currentValue * 2 + 2);
+            if( root -> left ) {
+                root -> left -> val = 2*x + 1 ;
+                q.push(root -> left ) ;
+            }
+
+            if( root -> right ) {
+                root -> right -> val = 2*x + 2 ;
+                q.push( root -> right ) ;
+            }
+
+            q.pop() ;
+        }
+    }
+
+    void preOrder(TreeNode* root, int target, bool &flag ) {
+        if( !root ) return  ;
+
+        if( root -> val == target ){
+            flag = true ;
+            return ;
+        } 
+
+        preOrder( root -> left, target, flag ) ;
+        preOrder( root -> right, target, flag ) ;
+    }
+    
+    bool find(int target) {
+        bool flag = false ;
+        preOrder(newRoot, target, flag ) ;
+        return flag ;
     }
 };
