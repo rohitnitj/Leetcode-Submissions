@@ -5,7 +5,7 @@ public:
         vector<int> adj[V] ;
 
         for( auto it : prerequisites){
-            adj[it[1]].push_back(it[0]) ;
+            adj[it[0]].push_back(it[1]) ;
         }      
 
 	    vector<int> indegree(V, 0 ) ;
