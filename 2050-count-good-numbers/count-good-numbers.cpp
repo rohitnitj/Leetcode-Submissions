@@ -10,7 +10,7 @@ private:
         while( y > 0 ) {
             if( y & 1 ) ans = (ans * x ) % mod ;
             y >>= 1 ;
-            x = (x%mod * x%mod ) % mod ;            
+            x = (x *x ) % mod ;            
         }
 
         return ans ;
