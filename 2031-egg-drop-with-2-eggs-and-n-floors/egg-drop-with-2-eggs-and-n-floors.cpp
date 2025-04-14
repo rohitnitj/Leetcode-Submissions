@@ -4,7 +4,7 @@ private:
         if( f == 0 || f == 1 || e == 1 ) return dp[e][f] = f ;
         if( dp[e][f] != -1 ) return dp[e][f] ;
         int mimi = 1e8 ;
-
+        
         for( int k = 1 ; k <= f ; k++ ) {
             int t1, t2 ;
 
@@ -17,10 +17,10 @@ private:
             int temp = 1 + max( t1 , t2 ) ;
             mimi = min( mimi , temp ) ;
         }
-
         return dp[e][f] = mimi ;
     }
 
+public:
     int eggDrop(int n, int k) {
         vector<vector<int>> dp(n + 1, vector<int>(k + 1, -1));
         return solve(n, k, dp) ;
