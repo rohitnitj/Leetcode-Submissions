@@ -14,9 +14,7 @@ public:
 
     void solve( TreeNode* root, int k , int &count , vector<long long int> path ) {
 
-        if ( root == NULL ) {
-            return ;
-        }
+        if ( root == NULL ) return ;
 
         path.push_back(root -> val ) ;
 
@@ -27,9 +25,7 @@ public:
         long long int sum = 0 ;
         for ( int i = size-1 ; i>=0 ; i-- ) {
             sum += path[i] ;
-            if ( sum == k ) {
-                count ++ ;
-            }
+            if ( sum == k ) count ++ ;
         }
 
         path.pop_back() ;
