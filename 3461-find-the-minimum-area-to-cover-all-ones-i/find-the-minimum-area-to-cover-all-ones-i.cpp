@@ -4,43 +4,18 @@ public:
         int n = grid.size() ;
         int m = grid[0].size() ;
 
-        int top = 0, bottom = n-1 ;
-        int left = 0, right = m-1 ;
+        int top = n-1, bottom = 0;
+        int left = m-1, right = 0;
 
         for( int i = 0 ; i < n ; i++ ) {
-            top = i ;
-            bool f = false ;
             for( int j = 0 ; j < m ; j++ ) {
-                if( grid[i][j] == 1 ) f = true ;
+                if( grid[i][j] ) {
+                    top = min( top, i ) ;
+                    bottom = max( bottom, i ) ;
+                    left = min( left, j ) ;
+                    right = max( right, j ) ;
+                }
             }
-            if( f ) break ;
-        }
-
-        for( int i = n-1 ; i >= 0 ; i-- ) {
-            bottom = i ;
-            bool f = false ;
-            for( int j = 0 ; j < m ; j++ ) {
-                if( grid[i][j] == 1 ) f = true ;
-            }
-            if( f ) break ;
-        }
-
-        for( int j = 0 ; j < m ; j++ ) {
-            left = j ;
-            bool f = false ;
-            for( int i = 0 ; i < n ; i++ ) {
-                if( grid[i][j] == 1 ) f = true ;
-            }
-            if( f ) break ;
-        }        
-
-        for( int j = m-1 ; j >= 0 ; j-- ) {
-            right = j ;
-            bool f = false ;
-            for( int i = 0 ; i < n ; i++ ) {
-                if( grid[i][j] == 1 ) f = true ;
-            }
-            if( f ) break ;
         }
 
         if( top > bottom || left > right ) return 0 ;
