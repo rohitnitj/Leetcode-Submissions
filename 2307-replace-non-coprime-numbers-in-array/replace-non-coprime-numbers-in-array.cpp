@@ -1,18 +1,5 @@
 class Solution {
 public:
-    int gcd(int a, int b) {
-        while( b ) {
-            int temp = a % b ; 
-            a = b ; 
-            b = temp ;
-        }
-        return a ;
-    }
-
-    long long lcm(int a, int b ) {
-        return ( long long ) a / gcd(a, b ) * b ;
-    }
-
     vector<int> replaceNonCoprimes(vector<int>& nums) {
         vector<int> st ;
         
