@@ -1,52 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+typedef long long ll ; 
+
 class Solution {
 public:
-    int getVal(string &traversal, const int &n, int &pos ) {
-        int val = 0 ;
-        while( pos < n && traversal[pos] >= '0' && traversal[pos] <= '9' ) {
-            val = val * 10 + ( traversal[pos] - '0' ) ;
-            pos++ ;
+    int getNodeVal(int &idx, string &traversal ) {
+        int val = 0 ; 
+        while( idx < traversal.size() && traversal[idx] >= '0' && traversal[idx] <= '9' ) {
+            val = val * 10 + ( traversal[idx] - '0')  ;
+            idx++ ; 
         }
-        return val ;
+        return val ; 
     }
 
-    int getDashLen(string &traversal, const int &n, int &pos ) {
-        int dash_len = 0 ;
-        while( pos < n && traversal[pos] == '-') {
-            dash_len++ ;
-            pos++ ;
+    int getDepth( int &i, string &traversal ) {
+        int depth = 0 ; 
+        while( i < traversal.size() && traversal[i] == '-' ) {
+            i++ ; 
+            depth++ ;
         }
-        return dash_len ;
-    }
-    
-    void buildTree(TreeNode *curr, int expected_dash_len, string &traversal, const int &n , int &pos ) {
-        if( pos == n ) return ;
-
-        int prev_pos = pos ;
-        int dash_len = getDashLen(traversal, n, pos ) ;
-
-        if( dash_len < expected_dash_len ) {
-            pos = prev_pos ;
-            return ;
-        } 
-
-        int node_val = getVal(traversal, n, pos ) ;
-        TreeNode* new_node = new TreeNode(node_val ) ;
-
-        if( !curr -> left ) curr -> left = new_node ;
-        else                curr -> right = new_node ;
-
-        buildTree(new_node, 1+expected_dash_len, traversal, n, pos ) ;
-        buildTree(new_node, 1+expected_dash_len, traversal, n, pos ) ;
+        return depth ; 
     }
 
     TreeNode* recoverFromPreorder(string traversal) {
-        int n = traversal.size() ;
-        int pos = 0 ;
-        TreeNode *root = new TreeNode(getVal(traversal, n, pos ) ) ;
+        int n = traversal.size() ; 
 
-        buildTree(root, 1, traversal, n, pos ) ;
-        buildTree(root, 1, traversal, n, pos ) ;
+        int i = 0 ; 
+        int nodeVal = getNodeVal(i, traversal) ; 
+        TreeNode *root = new TreeNode(nodeVal ) ; 
 
-        return root ;
+        stack<TreeNode*> st ; 
+        st.push(root) ; 
+
+        while( i < n ) {
+            int depth = getDepth(i, traversal ) ; 
+            int nodeVal = getNodeVal(i, traversal ) ;         
+            
+            while( st.size() > depth ) {
+                st.pop() ; 
+            }
+
+            TreeNode *curr = st.top() ; 
+
+            if( curr -> left == NULL ) {
+                curr -> left = new TreeNode( nodeVal ) ; 
+                st.push( curr -> left ) ; 
+            }
+            else if( curr -> right == NULL ) {
+                curr -> right = new TreeNode( nodeVal ) ; 
+                st.push( curr -> right ) ; 
+            }
+        }
+
+        return root ; 
     }
 };
