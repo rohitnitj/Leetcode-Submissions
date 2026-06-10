@@ -21,7 +21,8 @@ public:
 
     vector<string> generateValidStrings(int n, int k) {
         vector<string> ans ; 
-        solve( 0, 0, ans, "", n, k ) ; 
+        string temp = "" ; 
+        solve( 0, 0, ans, temp, n, k ) ; 
         return ans ; 
     }
 };
