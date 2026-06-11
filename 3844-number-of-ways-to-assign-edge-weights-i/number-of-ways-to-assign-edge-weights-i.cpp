@@ -13,10 +13,6 @@ public:
         return ans ; 
     }
 
-    ll findInverse( int r ) {
-        return expo( r, MOD-2 ) ; 
-    }
-
     int assignEdgeWeights(vector<vector<int>>& edges) {
         int n = edges.size() ; 
 
@@ -46,13 +42,7 @@ public:
             }
         }
 
-        ll ans = 0 ; 
-        ll ncr = 1 ; 
-        for( ll r = 1 ; r <= maxDepth ; r++ ) {
-            ncr =( ncr * ( maxDepth - r + 1 )) % MOD ; 
-            ncr = ncr * findInverse(r) % MOD ;
-            if( r & 1 ) ans = ( ans + ncr ) % MOD ; 
-        }
+        ll ans = expo(2, maxDepth-1 ) ; 
 
         return ans ; 
     }
