@@ -1,53 +1,54 @@
 class Solution {
 public:
-    int m, n;
-    int totalPaths = 0;
-    int emptyCount = 0;
-    
+    vector<int> dr = {-1, 0, 1, 0 } ; 
+    vector<int> dc = {0, -1, 0, 1 } ; 
+
+    void dfs( int r, int c, vector<vector<int>> &grid, int n, int m, int endRow, int endCol, int emptyCount, int &totalPaths ) {
+        if( r == endRow && c == endCol ) {
+            if( emptyCount == -1 ) totalPaths++ ; 
+            return ; 
+        }
+
+        int temp = grid[r][c] ; 
+        grid[r][c] = -1 ; 
+
+        for( int i = 0 ; i < 4 ; i++ ) {
+            int nr = r + dr[i] ; 
+            int nc = c + dc[i] ; 
+
+            if( nr >= 0 && nr < n && nc >= 0 && nc < m && grid[nr][nc] != -1 ) {
+                dfs( nr, nc, grid, n, m, endRow, endCol, emptyCount-1, totalPaths ) ; 
+            }
+        }
+
+        grid[r][c] = temp ; 
+    }
+
     int uniquePathsIII(vector<vector<int>>& grid) {
-        m = grid.size();
-        n = grid[0].size();
-        
-        int startX, startY;
-        
-        // Count empty squares and find start
-        for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                if(grid[i][j] == 0) emptyCount++;
-                else if(grid[i][j] == 1) {
-                    startX = i;
-                    startY = j;
+        int n = grid.size() ;
+        int m = grid[0].size() ; 
+
+        int emptyCount = 0 ; 
+        int startRow, startCol, endRow, endCol ; 
+
+        for( int i = 0 ; i < n; i++ ) {
+            for( int j = 0 ; j < m ; j++ ) {
+                if( grid[i][j] == 1 ) {
+                    startRow = i ; 
+                    startCol = j ; 
+                }
+                else if( grid[i][j] == 2 ) {
+                    endRow = i ; 
+                    endCol = j ; 
+                }
+                else if( grid[i][j] == 0 ) {
+                    emptyCount++ ; 
                 }
             }
         }
-        
-        // Start DFS
-        dfs(grid, startX, startY, -1);  // start cell counted as visited (-1)
-        
-        return totalPaths;
-    }
-    
-    void dfs(vector<vector<int>>& grid, int x, int y, int count) {
-        // Out of bounds or obstacle
-        if(x < 0 || y < 0 || x >= m || y >= n || grid[x][y] == -1) return;
-        
-        // If reached end
-        if(grid[x][y] == 2) {
-            if(count == emptyCount) totalPaths++; // Valid path
-            return;
-        }
-        
-        // Mark as visited
-        int temp = grid[x][y];
-        grid[x][y] = -1;
-        
-        // Move in 4 directions
-        dfs(grid, x+1, y, count+1);
-        dfs(grid, x-1, y, count+1);
-        dfs(grid, x, y+1, count+1);
-        dfs(grid, x, y-1, count+1);
-        
-        // Backtrack
-        grid[x][y] = temp;
+
+        int totalPaths = 0 ;
+        dfs(startRow, startCol, grid, n, m, endRow, endCol, emptyCount, totalPaths) ; 
+        return totalPaths ; 
     }
 };
