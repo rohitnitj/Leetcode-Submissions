@@ -2,9 +2,9 @@ class Solution {
 private:
     bool isSafe(vector<string> &arr, int row, int col, int n ) {
 
-        for( int i = 0 ; i < col ; i++ ) {
-            if( arr[row][i] == 'Q' ) return false ;
-        }
+        // for( int i = 0 ; i < col ; i++ ) {
+        //     if( arr[row][i] == 'Q' ) return false ;
+        // }
 
         for( int i = 0 ; i < row ; i++ ) {
             if( arr[i][col] == 'Q' ) return false ;
