@@ -1,48 +1,36 @@
 class Solution {
-private:
-    bool isSafe(vector<string> &arr, int row, int col, int n ) {
-
-        // for( int i = 0 ; i < col ; i++ ) {
-        //     if( arr[row][i] == 'Q' ) return false ;
-        // }
-
-        for( int i = 0 ; i < row ; i++ ) {
-            if( arr[i][col] == 'Q' ) return false ;
-        }
-
-        for( int i = row, j = col ; i >= 0 && j >= 0 ; i-- , j-- ) {
-            if( arr[i][j] == 'Q' ) return false ;
-        }
-
-        for( int i = row, j = col ; j < n && i >= 0 ; i--, j++ ) {
-            if( arr[i][j] == 'Q' ) return false ;
-        }
-
-        return true ;
-    }
-
-    void func(vector<vector<string>> &ans, vector<string> &arr, int row, int n ) {
-        if( row == n ) {
-            ans.push_back(arr ) ;
-            return ;
-        }
-
-        for(int i = 0 ; i < n ; i++ ) {
-
-            if( isSafe(arr, row, i, n ) ) {
-                arr[row][i] = 'Q' ;
-                func(ans, arr, row+1, n ) ;
-                arr[row][i] = '.' ;
-            }
-        }
-    }
-
 public:
     vector<vector<string>> solveNQueens(int n) {
-        vector<vector<string>> ans ;
-        vector<string> arr(n, string(n, '.' ) ) ;
+        vector<vector<string>> ans;
+        vector<string> board(n, string(n, '.'));
+        vector<int> leftRow(n, 0), upperDiagonal(2 * n - 1, 0), lowerDiagonal(2 * n - 1, 0);
+        solve(0, board, ans, leftRow, upperDiagonal, lowerDiagonal, n);
+        return ans;
+    }
 
-        func(ans, arr, 0, n ) ;
-        return ans ;
+private:
+    void solve(int col, vector<string>& board, vector<vector<string>>& ans, 
+               vector<int>& leftRow, vector<int>& upperDiagonal, vector<int>& lowerDiagonal, int n) {
+        if (col == n) {
+            ans.push_back(board);
+            return;
+        }
+
+        for (int row = 0; row < n; row++) {
+            if (leftRow[row] == 0 && lowerDiagonal[row + col] == 0 && upperDiagonal[n - 1 + col - row] == 0) {
+                
+                board[row][col] = 'Q';
+                leftRow[row] = 1;
+                lowerDiagonal[row + col] = 1;
+                upperDiagonal[n - 1 + col - row] = 1;
+
+                solve(col + 1, board, ans, leftRow, upperDiagonal, lowerDiagonal, n);
+
+                board[row][col] = '.';
+                leftRow[row] = 0;
+                lowerDiagonal[row + col] = 0;
+                upperDiagonal[n - 1 + col - row] = 0;
+            }
+        }
     }
 };
