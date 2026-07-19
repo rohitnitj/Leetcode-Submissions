@@ -1,29 +1,21 @@
 class Solution {
 public:
-    bool isValid(string& p) {
-        int bal = 0;
-        for (char c : p) {
-            if (c == '(') bal++;
-            else bal--;
-            if (bal < 0) return false;
-        }
-        return bal == 0;
-    }
-
-    void generateAll(string current, int n, vector<string>& result) {
-        if (current.length() == 2 * n) {
-            if (isValid(current)) {
-                result.push_back(current);
-            }
+    void backtrack(vector<string>& result, string current, int open, int close, int max) {
+        if (current.length() == max * 2) {
+            result.push_back(current);
             return;
         }
-        generateAll(current + '(', n, result);
-        generateAll(current + ')', n, result);
+        if (open < max) {
+            backtrack(result, current + "(", open + 1, close, max);
+        }
+        if (close < open) {
+            backtrack(result, current + ")", open, close + 1, max);
+        }
     }
 
     vector<string> generateParenthesis(int n) {
         vector<string> result;
-        generateAll("", n, result);
+        backtrack(result, "", 0, 0, n);
         return result;
     }
 };
