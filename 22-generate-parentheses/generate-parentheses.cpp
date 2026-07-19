@@ -1,27 +1,29 @@
 class Solution {
 public:
-
-    void solve(vector<string> &ans , int n , int o, int c , string curr ){
-        // base case
-        if(curr.size() == n*2){
-            ans.push_back(curr);
-            return ;
+    bool isValid(string& p) {
+        int bal = 0;
+        for (char c : p) {
+            if (c == '(') bal++;
+            else bal--;
+            if (bal < 0) return false;
         }
+        return bal == 0;
+    }
 
-        if(o < n ){
-            solve(ans , n , o+1 , c , curr + '(' ) ;
+    void generateAll(string current, int n, vector<string>& result) {
+        if (current.length() == 2 * n) {
+            if (isValid(current)) {
+                result.push_back(current);
+            }
+            return;
         }
-        if(c < o ){
-            solve(ans , n , o , c + 1 , curr + ')' ) ;
-        }
-
+        generateAll(current + '(', n, result);
+        generateAll(current + ')', n, result);
     }
 
     vector<string> generateParenthesis(int n) {
-        
-        vector<string> ans ;
-        solve(ans,n,0,0,"");
-
-        return ans ;
+        vector<string> result;
+        generateAll("", n, result);
+        return result;
     }
 };
