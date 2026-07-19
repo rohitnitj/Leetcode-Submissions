@@ -1,28 +1,39 @@
 class Solution {
 public:
     int myAtoi(string s) {
-        int n = s.size() ;
-        long long num = 0 ;
-        bool neg_sign = false  ;
-        int i = 0 ;
-
-        while( i < n && s[i] == ' ' ) i++ ;
-
-        if( i < n && ( s[i] == '-' || s[i] == '+' )){
-            neg_sign = ( s[i] == '-' ) ;
-            i++ ;
+        return helper(s, 0, 0, 1, 0);
+    }
+    
+private:
+    int helper(const string& s, int i, long long num, int sign, int state) {
+        if (i >= s.size()) {
+            return sign * num;
         }
-
-        while ( i < n && ( s[i] - '0' ) >= 0 && ( s[i] - '0' ) <= 9 ) {
-            int curr = s[i] - '0' ;
-            num = num * 10 + curr ;
-
-            if( neg_sign && -num < INT_MIN ) return INT_MIN ;
-            if( !neg_sign && num > INT_MAX ) return INT_MAX ;
-
-            i++ ;
+        
+        if (state == 0) {
+            if (s[i] == ' ') {
+                return helper(s, i + 1, num, sign, 0);
+            }
+            if (s[i] == '+' || s[i] == '-') {
+                return helper(s, i + 1, num, s[i] == '-' ? -1 : 1, 1);
+            }
+            if (isdigit(s[i])) {
+                return helper(s, i, num, sign, 1);
+            }
+            return 0;
         }
-
-        return neg_sign ? ( -1 * num ) : num ;
+        
+        if (isdigit(s[i])) {
+            num = num * 10 + (s[i] - '0');
+            if (sign == 1 && num > INT_MAX) {
+                return INT_MAX;
+            }
+            if (sign == -1 && num > 2147483648LL) {
+                return INT_MIN;
+            }
+            return helper(s, i + 1, num, sign, 1);
+        }
+        
+        return sign * num;
     }
 };
