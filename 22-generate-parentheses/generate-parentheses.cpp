@@ -1,21 +1,17 @@
 class Solution {
 public:
-    void backtrack(vector<string>& result, string current, int open, int close, int max) {
-        if (current.length() == max * 2) {
-            result.push_back(current);
-            return;
-        }
-        if (open < max) {
-            backtrack(result, current + "(", open + 1, close, max);
-        }
-        if (close < open) {
-            backtrack(result, current + ")", open, close + 1, max);
-        }
-    }
-
     vector<string> generateParenthesis(int n) {
+        if (n == 0) {
+            return {""};
+        }
         vector<string> result;
-        backtrack(result, "", 0, 0, n);
+        for (int c = 0; c < n; ++c) {
+            for (string left : generateParenthesis(c)) {
+                for (string right : generateParenthesis(n - 1 - c)) {
+                    result.push_back("(" + left + ")" + right);
+                }
+            }
+        }
         return result;
     }
 };
