@@ -1,15 +1,21 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        int n = s.size() ;
-        int lastseen[3] = {-1,-1,-1} ;
-        int cnt = 0 ;
+        int n = s.size() ; 
 
-        for ( int i = 0 ; i < n; i++ ) {
-            lastseen[s[i] -'a'] = i ;
-            cnt += ( 1 + min(lastseen[0], min(lastseen[1], lastseen[2]) ) ) ;
+        map<char, int> freq ; 
+        int left = 0, ans = 0 ; 
+
+        for( int right = 0 ; right < n ; right++ ) {
+            freq[s[right]]++ ; 
+
+            while( freq['a'] >= 1 && freq['b'] >= 1 && freq['c'] >= 1 ) {
+                ans += ( n - right ) ; 
+                freq[s[left]]-- ; 
+                left++ ; 
+            }
         }
 
-        return cnt ;
+        return ans ;
     }
 };
