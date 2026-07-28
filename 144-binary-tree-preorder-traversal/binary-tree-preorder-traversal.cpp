@@ -16,9 +16,8 @@ public:
         TreeNode *curr = root ; 
 
         while( curr != NULL ) {
-            preorder.push_back( curr -> val ) ; 
-
             if( curr -> left == NULL ) {
+                preorder.push_back( curr -> val ) ; 
                 curr = curr -> right ; 
             }
             else {
@@ -28,11 +27,11 @@ public:
                 }
 
                 if( prev -> right == curr ) {
-                    preorder.pop_back() ; 
                     prev -> right = NULL ; 
                     curr = curr -> right ; 
                 }
                 else {
+                    preorder.push_back( curr -> val ) ; 
                     prev -> right = curr ; 
                     curr = curr -> left ; 
                 }
