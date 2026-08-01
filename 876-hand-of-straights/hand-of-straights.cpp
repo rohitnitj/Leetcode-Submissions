@@ -1,34 +1,30 @@
 class Solution {
 public:
-   bool findSuccessors(vector<int>& hand, int gs, int i, int n) {
-        int next = hand[i] + 1;
-        hand[i] = -1;  
-        int cnt = 1;
-        i++ ;
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        if (hand.size() % groupSize != 0) return false;
 
-        while( i < n && cnt < gs ) {
-            if( hand[i] == next ) {
-                next = hand[i] + 1 ;
-                hand[i] = -1 ;
-                cnt++ ;
+        map<int,int> freq ; 
+        for( int h : hand ) freq[h]++ ; 
+
+        auto it = freq.begin() ; 
+
+        while( it != freq.end() ) {
+            if( it -> second == 0 ) {
+                it++ ; 
+                continue ; 
+            } 
+
+            int start = it -> first ; 
+            int cnt = it -> second ; 
+
+            for( int i = 0 ; i < groupSize; i++ ) {
+                if( freq[start + i ] < cnt ) return false; 
+                freq[start + i ] -= cnt ; 
             }
-            i++ ;
+
+            it++ ; 
         }
 
-        return cnt == gs ;
-    }
-
-    bool isNStraightHand(vector<int>& hand, int gs) {
-        int n = hand.size() ;
-        if( n % gs != 0 ) return false ;
-        sort(hand.begin(), hand.end() ) ;
-
-        for( int i = 0 ; i < n ; i++ ) {
-            if( hand[i] >= 0 ) {
-                if( !findSuccessors(hand, gs, i, n ) ) return false ;
-            }
-        }
-
-        return true ;
+        return true ; 
     }
 };
